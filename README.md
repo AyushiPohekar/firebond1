@@ -1,3 +1,3 @@
 Deployed Url:
 
-https://6470e3b7943601000839f602--genuine-sunflower-4ce9d7.netlify.app/
+https://6470e98e669a52038d325457--marvelous-mousse-15a06b.netlify.app/
