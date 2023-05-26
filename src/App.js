@@ -105,7 +105,7 @@ function Argument({ handleClose,list }) {
   return (
     <>
      <select>
-        <option value="">-- select --</option>
+        
        
         {list.map((item, index) => (
         <option key={index}>{item}</option>
@@ -120,8 +120,12 @@ function Argument({ handleClose,list }) {
 function And({ handleClose }) {
   return (
     <>
-      <div>And Component</div>
-      <Close handleClose={handleClose} />
+     
+       <Close handleClose={handleClose} />
+      <Original/>
+      <Original/>
+     <button>+ add op</button>
+   
     </>
   );
 }
