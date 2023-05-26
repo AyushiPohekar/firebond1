@@ -7,13 +7,15 @@ function App() {
   const [boolean, setBoolean] = useState("undefined");
   const [argument, setArgument] = useState();
   const [list, setList] = useState(["My Arg"]);
-  console.log(list);
+
   const [showInput, setShowInput] = useState(false);
   const [item, setItem] = useState("");
 
   const handleAddItem = (item) => {
     setList([...list, item]);
   };
+
+  const handleAndAdd = () => {};
 
   const handleAddButtonClick = () => {
     if (item.trim() !== "") {
@@ -22,6 +24,7 @@ function App() {
       setShowInput(false);
     }
   };
+
   const handleInputChange = (event) => {
     setItem(event.target.value);
   };
@@ -61,14 +64,19 @@ function App() {
         ) : selectedOption === "constant" ? (
           <Boolean handleClose={handleClose} handleBoolean={handleBoolean} />
         ) : selectedOption === "argument" ? (
-          <Argument handleClose={handleClose} list={list}/>
+          <Argument handleClose={handleClose} list={list} />
         ) : selectedOption === "and" ? (
-          <And handleClose={handleClose} />
+          <And
+            handleClose={handleClose}
+            handleOptionChange={handleOptionChange}
+            handleAndAdd={handleAndAdd}
+            list={list}
+          />
         ) : selectedOption === "or" ? (
           <Or handleClose={handleClose} />
         ) : null}
 
-        <div>result:{boolean}</div>
+        <div>result: {boolean}</div>
       </div>
     </div>
   );
@@ -101,31 +109,85 @@ function Boolean({ handleClose, handleBoolean }) {
   );
 }
 
-function Argument({ handleClose,list }) {
+function Argument({ handleClose, list }) {
   return (
     <>
-     <select>
-        
-       
+      <select>
         {list.map((item, index) => (
-        <option key={index}>{item}</option>
-      ))}
-     
+          <option key={index}>{item}</option>
+        ))}
       </select>
       <Close handleClose={handleClose} />
     </>
   );
 }
 
-function And({ handleClose }) {
+function And({ handleClose, handleOptionChange, list }) {
+  const [selectedOptions, setSelectedOptions] = useState(["", ""]);
+  console.log(selectedOptions)
+  const handleOptionChangeForIndex = (event, index) => {
+    const updatedOptions = [...selectedOptions];
+    updatedOptions[index] = event.target.value;
+    setSelectedOptions(updatedOptions);
+  };
+
+  const handleAddOp = () => {
+    setSelectedOptions([...selectedOptions, ""]);
+  };
+  
+  const hasAndOption = selectedOptions.includes("and");
   return (
     <>
+      <div>
+        <select>
+          <option value="and">And</option>
+          <option value="or">Or</option>
+        </select>
+        <Close handleClose={handleClose} />
+      </div>
+      <div>
+        {selectedOptions.map((option, index) =>
+          option === "constant" ? (
+            <Boolean
+            key={index}
+            handleClose={handleClose}
+            handleBoolean={(event) =>
+              handleOptionChangeForIndex(event, index)
+            }
+          />
+          ) : option === "argument" ? (
+            <Argument
+              key={index}
+              handleClose={handleClose}
+              list={list}
+              handleOptionChange={(event) =>
+                handleOptionChangeForIndex(event, index)
+              }
+            />
+          ) :option === "and" ?(
+            <And
+            key={index}
+            handleClose={handleClose}
+            list={list}
+            handleOptionChange={(event) =>
+              handleOptionChangeForIndex(event, index)
+            }
+          />
+          ): (
+           
+            <Original
+              key={index}
+              handleOptionChange={(event) =>
+                handleOptionChangeForIndex(event, index)
+              }
+            />
+          )
+        )}
+         {!hasAndOption && (
+        <button onClick={handleAddOp}>+ add op</button>
+      )}
+      </div>
      
-       <Close handleClose={handleClose} />
-      <Original/>
-      <Original/>
-     <button>+ add op</button>
-   
     </>
   );
 }
@@ -146,38 +208,32 @@ function UpperArgument({
   handleInputChange,
   handleAddButtonClick,
   item,
-  list
+  list,
 }) {
   return (
     <>
       <div>
-   
-      
+        {list.map((item, index) => {
+          return (
+            <div className="listdiv" key={index}>
+              <span>{item}</span>
+              <select onChange={handleBoolean}>
+                <option value="true">true</option>
+                <option value="false">false</option>
+              </select>
+            </div>
+          );
+        })}
 
-      {list.map((item,index)=>{
-        return(
-          <div className="listdiv">
-          <span key={index}>{item}</span>
-          <select onChange={handleBoolean}>
-        <option value="true">true</option>
-        <option value="false">false</option>
-         </select>
-          </div>
-        )
-      })}
-     
-      
-
-        
         <div className="showInputdiv">
           {showInput ? (
             <>
               <input type="text" value={item} onChange={handleInputChange} />
-             
+
               <button onClick={handleAddButtonClick}>Add</button>
             </>
           ) : null}
-          <button onClick={handlePlus}>+add arg</button>
+          <button onClick={handlePlus}>+ add arg</button>
         </div>
       </div>
     </>
@@ -189,3 +245,4 @@ function Close({ handleClose }) {
 }
 
 export default App;
+
