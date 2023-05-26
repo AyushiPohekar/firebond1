@@ -7,17 +7,28 @@ function App() {
   const [boolean, setBoolean] = useState("undefined");
   const [argument, setArgument] = useState();
   const [list, setList] = useState(["My Arg"]);
-  console.log(list)
+  console.log(list);
   const [showInput, setShowInput] = useState(false);
-  const [input, setInput] = useState("");
+  const [item, setItem] = useState("");
 
- 
+  const handleAddItem = (item) => {
+    setList([...list, item]);
+  };
 
+  const handleAddButtonClick = () => {
+    if (item.trim() !== "") {
+      handleAddItem(item);
+      setItem("");
+      setShowInput(false);
+    }
+  };
+  const handleInputChange = (event) => {
+    setItem(event.target.value);
+  };
 
   const handlePlus = () => {
     setShowInput(true);
   };
-
 
   const handleBoolean = (event) => {
     setBoolean(event.target.value);
@@ -39,9 +50,10 @@ function App() {
         handleBoolean={handleBoolean}
         handlePlus={handlePlus}
         showInput={showInput}
-     
-        input={input}
-      
+        handleInputChange={handleInputChange}
+        handleAddButtonClick={handleAddButtonClick}
+        item={item}
+        list={list}
       />
       <div className="lowerdiv">
         {showOriginal ? (
@@ -49,7 +61,7 @@ function App() {
         ) : selectedOption === "constant" ? (
           <Boolean handleClose={handleClose} handleBoolean={handleBoolean} />
         ) : selectedOption === "argument" ? (
-          <Argument handleClose={handleClose} />
+          <Argument handleClose={handleClose} list={list}/>
         ) : selectedOption === "and" ? (
           <And handleClose={handleClose} />
         ) : selectedOption === "or" ? (
@@ -89,10 +101,17 @@ function Boolean({ handleClose, handleBoolean }) {
   );
 }
 
-function Argument({ handleClose }) {
+function Argument({ handleClose,list }) {
   return (
     <>
-      <div>Argument Component</div>
+     <select>
+        <option value="">-- select --</option>
+       
+        {list.map((item, index) => (
+        <option key={index}>{item}</option>
+      ))}
+     
+      </select>
       <Close handleClose={handleClose} />
     </>
   );
@@ -116,24 +135,42 @@ function Or({ handleClose }) {
   );
 }
 
-function UpperArgument({ handleBoolean, handlePlus, showInput}) {
-
+function UpperArgument({
+  handleBoolean,
+  handlePlus,
+  showInput,
+  handleInputChange,
+  handleAddButtonClick,
+  item,
+  list
+}) {
   return (
     <>
       <div>
-        <span style={{ border: "1px solid black", width: "max-content" }}>
-          My Argument
-        </span>
+   
+      
 
-        <select onChange={handleBoolean}>
-          <option value="true">true</option>
-          <option value="false">false</option>
-        </select>
+      {list.map((item,index)=>{
+        return(
+          <div className="listdiv">
+          <span key={index}>{item}</span>
+          <select onChange={handleBoolean}>
+        <option value="true">true</option>
+        <option value="false">false</option>
+         </select>
+          </div>
+        )
+      })}
+     
+      
+
+        
         <div className="showInputdiv">
           {showInput ? (
             <>
-              <input type="text"/>
-              <button>Add</button>
+              <input type="text" value={item} onChange={handleInputChange} />
+             
+              <button onClick={handleAddButtonClick}>Add</button>
             </>
           ) : null}
           <button onClick={handlePlus}>+add arg</button>
