@@ -5,12 +5,23 @@ function App() {
   const [selectedOption, setSelectedOption] = useState("");
   const [showOriginal, setShowOriginal] = useState(true);
   const [boolean, setBoolean] = useState("undefined");
-  const [argument,setArgument]=useState()
+  const [argument, setArgument] = useState();
+  const [list, setList] = useState(["My Arg"]);
+  console.log(list)
+  const [showInput, setShowInput] = useState(false);
+  const [input, setInput] = useState("");
+
+ 
+
+
+  const handlePlus = () => {
+    setShowInput(true);
+  };
+
 
   const handleBoolean = (event) => {
     setBoolean(event.target.value);
   };
-
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
@@ -24,19 +35,29 @@ function App() {
 
   return (
     <div className="App">
-      {showOriginal ? (
-        <Original handleOptionChange={handleOptionChange} />
-      ) : selectedOption === "constant" ? (
-        <Boolean handleClose={handleClose} handleBoolean={handleBoolean} />
-      ) : selectedOption === "argument" ? (
-        <Argument handleClose={handleClose} />
-      ) : selectedOption === "and" ? (
-        <And handleClose={handleClose} />
-      ) : selectedOption === "or" ? (
-        <Or handleClose={handleClose} />
-      ) : null}
+      <UpperArgument
+        handleBoolean={handleBoolean}
+        handlePlus={handlePlus}
+        showInput={showInput}
+     
+        input={input}
+      
+      />
+      <div className="lowerdiv">
+        {showOriginal ? (
+          <Original handleOptionChange={handleOptionChange} />
+        ) : selectedOption === "constant" ? (
+          <Boolean handleClose={handleClose} handleBoolean={handleBoolean} />
+        ) : selectedOption === "argument" ? (
+          <Argument handleClose={handleClose} />
+        ) : selectedOption === "and" ? (
+          <And handleClose={handleClose} />
+        ) : selectedOption === "or" ? (
+          <Or handleClose={handleClose} />
+        ) : null}
 
-      <div>result:{boolean}</div>
+        <div>result:{boolean}</div>
+      </div>
     </div>
   );
 }
@@ -56,14 +77,14 @@ function Original({ handleOptionChange }) {
   );
 }
 
-function Boolean({ handleClose,handleBoolean }) {
+function Boolean({ handleClose, handleBoolean }) {
   return (
     <>
-       <select onChange={handleBoolean}>
-      <option value="true">true</option>
-      <option value="false">false</option>
-    </select>
-      <button onClick={handleClose}>X</button>
+      <select onChange={handleBoolean}>
+        <option value="true">true</option>
+        <option value="false">false</option>
+      </select>
+      <Close handleClose={handleClose} />
     </>
   );
 }
@@ -72,7 +93,7 @@ function Argument({ handleClose }) {
   return (
     <>
       <div>Argument Component</div>
-      <button onClick={handleClose}>X</button>
+      <Close handleClose={handleClose} />
     </>
   );
 }
@@ -81,7 +102,7 @@ function And({ handleClose }) {
   return (
     <>
       <div>And Component</div>
-      <button onClick={handleClose}>X</button>
+      <Close handleClose={handleClose} />
     </>
   );
 }
@@ -90,17 +111,40 @@ function Or({ handleClose }) {
   return (
     <>
       <div>Or Component</div>
-      <button onClick={handleClose}>X</button>
+      <Close handleClose={handleClose} />
     </>
   );
 }
 
-function UpperArgument(){
-  <>
-  <input/>
-  <Boolean/>
-  </>
+function UpperArgument({ handleBoolean, handlePlus, showInput}) {
+
+  return (
+    <>
+      <div>
+        <span style={{ border: "1px solid black", width: "max-content" }}>
+          My Argument
+        </span>
+
+        <select onChange={handleBoolean}>
+          <option value="true">true</option>
+          <option value="false">false</option>
+        </select>
+        <div className="showInputdiv">
+          {showInput ? (
+            <>
+              <input type="text"/>
+              <button>Add</button>
+            </>
+          ) : null}
+          <button onClick={handlePlus}>+add arg</button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function Close({ handleClose }) {
+  return <button onClick={handleClose}>X</button>;
 }
 
 export default App;
-
