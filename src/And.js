@@ -4,9 +4,9 @@ import { Boolean } from "./Boolean";
 import { Argument } from "./Argument";
 import { Close } from "./Close";
 
-export function And({ handleClose, list }) {
+export function And({ handleClose, list,handleBoolean }) {
   const [selectedOptions, setSelectedOptions] = useState(["", ""]);
-  console.log(selectedOptions);
+  //console.log(selectedOptions);
   const handleOptionChangeForIndex = (event, index) => {
     const updatedOptions = [...selectedOptions];
     updatedOptions[index] = event.target.value;
@@ -32,7 +32,8 @@ export function And({ handleClose, list }) {
           <Boolean
             key={index}
             handleClose={handleClose}
-            handleBoolean={(event) => handleOptionChangeForIndex(event, index)} />
+            handleBoolean={handleBoolean}
+            handleOptionChange={(event) => handleOptionChangeForIndex(event, index)} />
         ) : option === "argument" ? (
           <Argument
             key={index}
@@ -53,11 +54,12 @@ export function And({ handleClose, list }) {
         )
         )}
         
-        {!hasAndOption && (
-          <button onClick={handleAddOp}>+ add op</button>
-        )}
+       
        
       </div>
+   
+          <button onClick={handleAddOp}>+ add op</button>
+      
 
     </div>
   );

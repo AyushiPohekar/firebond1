@@ -51,6 +51,7 @@ function App() {
   const handleClose = () => {
     setShowOriginal(true);
     setSelectedOption("");
+   
   };
 
   return (
@@ -74,6 +75,7 @@ function App() {
         ) : selectedOption === "and" ? (
           <And
             handleClose={handleClose}
+            handleBoolean={handleBoolean}
             handleOptionChange={handleOptionChange}
             handleAndAdd={handleAndAdd}
             list={list}

@@ -1,4 +1,4 @@
-export function Original({ handleOptionChange }) {
+export function Original({ handleOptionChange,handleClose }) {
   return (
     <>
       <select onChange={handleOptionChange}>
@@ -8,7 +8,7 @@ export function Original({ handleOptionChange }) {
         <option value="and">And</option>
         <option value="or">Or</option>
       </select>
-      <button>X</button>
+      <button onClick={handleClose}>X</button>
     </>
   );
 }
