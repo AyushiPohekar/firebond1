@@ -82,7 +82,7 @@ function App() {
           <Or handleClose={handleClose} />
         ) : null}
 
-        <div>result: {boolean}</div>
+        <div className="resultbtn">result: {boolean}</div>
       </div>
     </div>
   );

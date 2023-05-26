@@ -19,7 +19,7 @@ export function And({ handleClose, list }) {
 
   const hasAndOption = selectedOptions.includes("and");
   return (
-    <>
+    <div className="Anddiv">
       <div>
         <select>
           <option value="and">And</option>
@@ -52,11 +52,13 @@ export function And({ handleClose, list }) {
             handleOptionChange={(event) => handleOptionChangeForIndex(event, index)} />
         )
         )}
+        
         {!hasAndOption && (
           <button onClick={handleAddOp}>+ add op</button>
         )}
+       
       </div>
 
-    </>
+    </div>
   );
 }
